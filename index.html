@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        hr {
+            border: 2px solid silver
+        }
+        .square {
+            width: 50px;
+            height: 50px;
+            background-color: aquamarine;
+            margin: 50px auto 50px;
+            border-radius: 20%;
+        }
+        .tooltip {
+            position: fixed;
+            box-sizing: border-box;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .tooltip.active {
+            opacity: 1;
+            visibility: visible;
+        }        
+        
+        .spoiler {
+            background-color: silver;
+            width: 300px;
+            margin: 20px auto;
+            
+        }
+
+        .spoiler h3 {
+            background-color: gray;
+            padding: 10px 20px;
+        }
+
+        .spoiler .hidden {
+            max-height: 0;
+        }
+
+        .hidden.active {
+            max-height: 500px;
+        }
+
+        .spoiler p {
+            padding: 20px;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .spoiler p.active {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>    
+    <div class="square" data-text="какой то текст">
+    </div>   
+    <hr>
+    <div data-spoiler class="spoiler">
+        <h3>Анотации</h3>
+        <div class="hidden">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam dolor perspiciatis eius quas inventore dignissimos optio delectus! Itaque, velit eaque.</p>
+        </div>
+    </div>
+    <script>
+        
+        let $toolTips = document.createElement('div');
+        $toolTips.classList.add('tooltip');
+
+        let $hoverElements = document.querySelectorAll('.square');
+
+        $hoverElements.forEach($hoverElement => {
+        $hoverElement.addEventListener('mousemove', function(e) {
+            let dataText = this.dataset.text;
+            $toolTips.textContent = dataText;
+            $toolTips.style.top = e.clientY + 20 + 'px';
+            $toolTips.style.left = e.clientX + 20 + 'px';
+            $toolTips.classList.add('active');
+
+            document.querySelector('body').appendChild($toolTips);
+        });
+
+    $hoverElement.addEventListener('mouseout', function(e) {
+        $toolTips.classList.remove('active');
+    });
+});
+
+
+        
+        let $spoilers = document.querySelectorAll('.spoiler');
+
+$spoilers.forEach($spoiler => {
+    $spoiler.addEventListener('click', function(e) {
+        let dataSpoiler = this.dataset.spoiler;
+        
+        let $hidden = document.querySelector(dataSpoiler + ' .hidden');
+        let $text = document.querySelector(dataSpoiler + ' .hidden p');
+
+        $hidden.classList.toggle('active');
+        $text.classList.toggle('active');
+
+        
+    })
+});
+      
+        
+    </script>
+</body>
+</html>
